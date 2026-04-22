@@ -49,6 +49,12 @@ Apply this precedence when evidence conflicts:
 
 Never allow layer 4 to override layers 1-3.
 
+8. CLI orchestration capability
+- Trigger: User wants to install, configure, manage portfolio, or query signals/recommendations.
+- Action: Run `wyckoff` CLI subcommands, parse output, present results to user.
+- Fallback: If CLI not installed, trigger full setup guide from `rules/cli-setup-guide.md`.
+- Routing: For operational intents (portfolio, signal, recommend, config), execute CLI directly without entering the analysis pipeline.
+
 ## Degrade Policy
 
 - Never invent OHLCV rows, dates, events, or session status.
