@@ -1,6 +1,6 @@
 ---
 name: wyckoff
-description: Wyckoff A-share analysis agent with full CLI integration. Detects local CLI installation, guides users through setup (install → register → configure data sources → configure model), then executes Wyckoff-style volume-price analysis with auditable portfolio decisions. Supports both first-time onboarding and daily operational workflows (portfolio management, signal queries, recommendations) via the wyckoff CLI.
+description: Wyckoff A-share analysis agent with full CLI + MCP integration. Detects local CLI installation, guides users through setup (install → register → configure data sources → configure model → optional MCP server), then executes Wyckoff-style volume-price analysis with auditable portfolio decisions. Supports first-time onboarding, daily operational workflows (portfolio management, signal queries, recommendations) via the wyckoff CLI, and 14-tool MCP server for Claude Code / Cursor integration.
 ---
 
 # Wyckoff Trading Agent
@@ -59,6 +59,35 @@ Run `wyckoff model list`.
 - **Has models** → proceed to Step 1.
 - **No models** → guide: `wyckoff model add` (interactive) or `wyckoff model set <name> <provider> <api_key> --model <model_name>`.
 
+### 0.5 MCP Server Setup (Optional — Ask User)
+
+After all checks pass, **ask the user** whether they want to register the Wyckoff MCP Server with their AI tools (Claude Code / Cursor / etc.).
+
+- **User says yes** → guide:
+  ```
+  pip install "youngcan-wyckoff-analysis[mcp]"
+  claude mcp add wyckoff -- wyckoff-mcp
+  ```
+  Once registered, the MCP client can directly call 14 Wyckoff tools (diagnose_stock, screen_stocks, get_signal_pending, etc.) without going through the CLI TUI.
+
+  If the user uses a non-Claude MCP client, guide them to add this to their MCP config:
+  ```json
+  {
+    "mcpServers": {
+      "wyckoff": {
+        "command": "wyckoff-mcp",
+        "env": {
+          "TUSHARE_TOKEN": "<token_from_wyckoff.json>",
+          "TICKFLOW_API_KEY": "<key_from_wyckoff.json>"
+        }
+      }
+    }
+  }
+  ```
+  Credentials already saved in `wyckoff.json` are also auto-read by the MCP server, so env vars are optional if `wyckoff login` + `wyckoff config` have been run.
+
+- **User says no / skip** → proceed directly to analysis.
+
 When all checks pass, print a brief summary and proceed to analysis.
 
 ## CLI Operational Commands
@@ -74,6 +103,7 @@ When the user's intent is operational (not analysis), route directly to the appr
 | View signals | `wyckoff signal` |
 | View recommendations | `wyckoff recommend` |
 | Update CLI | `wyckoff update` |
+| Register MCP Server | `pip install "youngcan-wyckoff-analysis[mcp]" && claude mcp add wyckoff -- wyckoff-mcp` |
 
 For the full CLI reference, see `rules/cli-setup-guide.md`.
 
@@ -167,4 +197,5 @@ Always output in this order:
 - `rules/alpha-system-prompt.md`: fixed role and hard rules.
 - `rules/source-fallbacks.md`: online source switching policy.
 - `rules/system-capability-playbook.md`: full system capability routing and degrade policy.
-- `rules/cli-setup-guide.md`: CLI installation, registration, and command reference.
+- `rules/cli-setup-guide.md`: CLI installation, registration, MCP setup, and command reference.
+- GitHub: https://github.com/YoungCan-Wang/Wyckoff-Analysis

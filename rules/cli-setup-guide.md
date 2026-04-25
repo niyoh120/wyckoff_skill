@@ -61,6 +61,56 @@ wyckoff model set <alias> <provider> <api_key> --model <model_name>
 
 Supported providers: `gemini`, `openai`, `claude`.
 
+## MCP Server (Optional)
+
+The Wyckoff MCP Server exposes 14 analysis tools via the [MCP protocol](https://modelcontextprotocol.io/), enabling Claude Code / Cursor / any MCP client to call them directly.
+
+### Install and Register
+
+```bash
+pip install "youngcan-wyckoff-analysis[mcp]"
+claude mcp add wyckoff -- wyckoff-mcp
+```
+
+### Manual MCP Client Config
+
+For non-Claude MCP clients, add to your MCP config file:
+
+```json
+{
+  "mcpServers": {
+    "wyckoff": {
+      "command": "wyckoff-mcp",
+      "env": {
+        "TUSHARE_TOKEN": "<your_token>",
+        "TICKFLOW_API_KEY": "<your_key>"
+      }
+    }
+  }
+}
+```
+
+Note: If `wyckoff login` and `wyckoff config` have already been run, the MCP server reads credentials from `wyckoff.json` automatically — env vars are optional.
+
+### Available MCP Tools (14)
+
+| Tool | Description |
+|---|---|
+| `search_stock_by_name` | Fuzzy search by name / ticker / pinyin |
+| `diagnose_stock` | Single stock Wyckoff diagnosis |
+| `diagnose_portfolio` | Batch portfolio health scan |
+| `get_portfolio` | View holdings and cash |
+| `update_portfolio` | Add / remove / update positions |
+| `get_stock_price` | Recent OHLCV data |
+| `get_market_overview` | Market indices overview |
+| `screen_stocks` | Five-layer funnel screening |
+| `run_backtest` | Historical backtest |
+| `generate_ai_report` | Three-camp AI report |
+| `generate_strategy_decision` | Hold/exit + new buy decisions |
+| `get_recommendation_tracking` | Historical recommendation tracking |
+| `get_signal_pending` | Signal confirmation pool |
+| `get_tail_buy_history` | Tail-buy strategy history |
+
 ## CLI Command Reference
 
 ### Auth
@@ -128,11 +178,12 @@ Supported providers: `gemini`, `openai`, `claude`.
 
 When guiding a new user, follow this exact order:
 
-1. **Install** → `pip install youngcan-wyckoff-analysis`
+1. **Install** → `curl -fsSL https://raw.githubusercontent.com/YoungCan-Wang/Wyckoff-Analysis/main/install.sh | bash`
 2. **Register** → open web app to create account
 3. **Login** → `wyckoff auth login`
 4. **Data source** → configure at least tushare or tickflow
 5. **Model** → `wyckoff model add`
-6. **Ready** → user can now run `wyckoff` for TUI or use any CLI subcommand
+6. **MCP (optional)** → ask user if they want MCP integration; if yes → `pip install "youngcan-wyckoff-analysis[mcp]" && claude mcp add wyckoff -- wyckoff-mcp`
+7. **Ready** → user can now run `wyckoff` for TUI, use any CLI subcommand, or invoke tools via MCP
 
-Each step depends on the previous one. Do not skip ahead.
+Each step depends on the previous one. Do not skip ahead. Step 6 is optional — always ask before proceeding.
