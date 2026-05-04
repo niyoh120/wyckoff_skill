@@ -16,7 +16,7 @@ Verify: `wyckoff --version`
 
 ## Account Registration
 
-1. Open https://wyckoff-analysis-youngcanphoenix.streamlit.app/
+1. Open https://wyckoff-analysis.pages.dev/
 2. Register with email and password.
 3. Login via CLI:
    ```bash
@@ -165,6 +165,24 @@ Note: If `wyckoff login` and `wyckoff config` have already been run, the MCP ser
 | `wyckoff recommend` | View today's AI recommendations |
 | `wyckoff recommend --json` | JSON output |
 | `wyckoff recommend -n 10` | Limit results |
+
+### Analysis
+
+| Command | Description |
+|---|---|
+| `wyckoff screen` | Five-layer funnel market screening |
+| `wyckoff backtest <code>` | Strategy historical backtest |
+| `wyckoff report <codes>` | AI deep research report (comma-separated) |
+| `wyckoff dashboard` | Launch local Streamlit visualization panel |
+
+### Data & Maintenance
+
+| Command | Description |
+|---|---|
+| `wyckoff log` | View conversation logs |
+| `wyckoff memory` | Agent memory management |
+| `wyckoff sync` | Sync Supabase → local SQLite |
+| `wyckoff cleanup` | Clean up expired local data |
 
 ### Misc
 

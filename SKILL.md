@@ -32,7 +32,7 @@ Run `wyckoff auth status`.
 
 - **Logged in** → proceed to 0.3. (Credentials are auto-saved; token expiry triggers automatic re-login.)
 - **Not logged in** → guide registration and login:
-  1. Tell user to open https://wyckoff-analysis-youngcanphoenix.streamlit.app/ to register an account.
+  1. Tell user to open https://wyckoff-analysis.pages.dev/ to register an account.
   2. After registration, run: `wyckoff auth login <email> <password>` (credentials will be persisted, no need to login again).
   3. Verify with `wyckoff auth status`.
 
@@ -102,6 +102,14 @@ When the user's intent is operational (not analysis), route directly to the appr
 | Set cash | `wyckoff portfolio cash <amount>` |
 | View signals | `wyckoff signal` |
 | View recommendations | `wyckoff recommend` |
+| Screen market | `wyckoff screen` |
+| Run backtest | `wyckoff backtest <code>` |
+| Generate report | `wyckoff report <codes>` |
+| Launch dashboard | `wyckoff dashboard` |
+| View chat logs | `wyckoff log` |
+| Manage memory | `wyckoff memory` |
+| Sync cloud data | `wyckoff sync` |
+| Cleanup local data | `wyckoff cleanup` |
 | Update CLI | `wyckoff update` |
 | Register MCP Server | `pip install "youngcan-wyckoff-analysis[mcp]" && claude mcp add wyckoff -- wyckoff-mcp` |
 
